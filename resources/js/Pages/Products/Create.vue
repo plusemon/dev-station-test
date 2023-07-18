@@ -2,6 +2,8 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, useForm } from '@inertiajs/vue3'
 
+defineProps({ errors: Object })
+
 const form = useForm({
     title: '',
     price: '',
@@ -9,7 +11,7 @@ const form = useForm({
 
 const productFormSubmitHandler = () => {
     form.post(route('products.store'), {
-        onFinish: () => alert('Product has been saved'),
+        onSuccess: () => alert('Product has been created successfully'),
     })
 }
 </script>
@@ -31,22 +33,23 @@ const productFormSubmitHandler = () => {
 
                             <div class="md:col-span-5">
                                 <label for="title">Product Title</label>
-                                <input type="text" v-model="form.title"
+                                <input type="text" v-model="form.title" placeholder="Ex: Lux Shop"
                                     class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" />
                             </div>
-
+                            <div class="text-red-600 font-bold" v-if="errors.title">{{ errors.title }}</div>
+                            
                             <div class="md:col-span-5">
-                                <label for="price">Product Price</label>
-                                <input type="number" v-model="form.price"
-                                    class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" />
+                                <label for="price">Product Price (Tk)</label>
+                                <input type="number" v-model="form.price" placeholder="Ex: 80"
+                                class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" />
                             </div>
+                            <div class="text-red-600 font-bold" v-if="errors.price">{{ errors.price }}</div>
 
 
                             <div class="md:col-span-5 text-right">
                                 <br>
                                 <button type="submit"
-                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save
-                                    Product</button>
+                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save Product</button>
                             </div>
 
                         </div>
