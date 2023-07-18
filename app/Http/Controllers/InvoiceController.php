@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
+use App\Models\Product;
 use Inertia\Inertia;
 
 class InvoiceController extends Controller
@@ -22,7 +23,9 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Invoices/Create');
+        $nextInvoiceId = Invoice::max('id') + 1;
+        $products = Product::get(['id', 'title', 'price']);
+        return Inertia::render('Invoices/Create', compact('nextInvoiceId', 'products'));
     }
 
     /**
@@ -30,7 +33,7 @@ class InvoiceController extends Controller
      */
     public function store(StoreInvoiceRequest $request)
     {
-        //
+        return $request->all();
     }
 
     /**

@@ -1,62 +1,70 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, useForm } from '@inertiajs/vue3'
+import { Head, useForm, Link } from '@inertiajs/vue3'
+import { ref } from 'vue'
+import { reactive } from 'vue'
 
-defineProps({ errors: Object })
+defineProps({
+    errors: Object
+})
 
 const form = useForm({
     title: '',
     price: '',
 })
 
+const status = ref(false)
+
 const productFormSubmitHandler = () => {
     form.post(route('products.store'), {
-        onSuccess: () => alert('Product has been created successfully'),
+        onSuccess: () => {
+            form.reset()
+            status.value = "Product has been added successfully"
+        },
     })
 }
+
 </script>
 
 <template>
     <Head title="Create Product" />
 
     <AuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Create Product</h2>
-        </template>
 
-        <!-- component -->
-        <div class="p-6 bg-gray-100 flex items-center justify-center">
-            <div class="container max-w-screen-lg mx-auto">
+        <div v-if="status" class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ status }}
+        </div>
+
+        <div class="card">
+            <div class="d-flex justify-content-between align-items-center mb-3 card-header">
+                <div class="h5">Products</div>
+                <Link :href="route('products.index')" class="btn btn-outline-secondary">Back to list</Link>
+
+            </div>
+            <div class="card-body">
                 <form @submit.prevent="productFormSubmitHandler">
-                    <div class="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
-                        <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
 
-                            <div class="md:col-span-5">
-                                <label for="title">Product Title</label>
-                                <input type="text" v-model="form.title" placeholder="Ex: Lux Shop"
-                                    class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" />
-                            </div>
-                            <div class="text-red-600 font-bold" v-if="errors.title">{{ errors.title }}</div>
-                            
-                            <div class="md:col-span-5">
-                                <label for="price">Product Price (Tk)</label>
-                                <input type="number" v-model="form.price" placeholder="Ex: 80"
-                                class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" />
-                            </div>
-                            <div class="text-red-600 font-bold" v-if="errors.price">{{ errors.price }}</div>
+                    <div class="mb-2">
+                        <label for="title">Title</label>
+                        <input type="text" v-model="form.title" placeholder="Ex: Lux Shop"
+                            class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" />
+                        <div class="text-danger fw-bold " v-if="errors.title">{{ errors.title }}</div>
+                    </div>
 
+                    <div class="mb-2">
+                        <label for="price">Price (Tk)</label>
+                        <input type="number" v-model="form.price" placeholder="Ex: 80"
+                            class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" />
+                        <div class="text-danger fw-bold " v-if="errors.price">{{ errors.price }}</div>
+                    </div>
 
-                            <div class="md:col-span-5 text-right">
-                                <br>
-                                <button type="submit"
-                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save Product</button>
-                            </div>
-
-                        </div>
+                    <div class="text-end mt-3">
+                        <button type="submit" class="btn btn-primary bg-primary">Save Product</button>
                     </div>
                 </form>
             </div>
-
         </div>
+
+
     </AuthenticatedLayout>
 </template>

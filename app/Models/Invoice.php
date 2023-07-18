@@ -14,5 +14,16 @@ class Invoice extends Model
      *
      * @var array
      */
-    protected $fillable = ['total_amount', 'tax_amount', 'discount_amount', 'sub_total_amount'];
+    protected $fillable = [
+        'invoice_date',
+        'due_date',
+        'customer_email',
+
+        'total_qty',
+        'total_amount',
+        'tax_amount',
+        'discount_amount',
+        'sub_total_amount',
+        'note'
+    ];
 }

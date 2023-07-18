@@ -11,7 +11,7 @@ class StoreInvoiceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,13 @@ class StoreInvoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'invoiceDate' => ['required', 'date'],
+            'dueDate' => ['required', 'date'],
+            'customer_email' => ['required', 'email', 'max:255'],
+            'items' => ['required', 'array'],
+            'discount' => ['required', 'numeric'],
+            'tax' => ['required', 'numeric'],
+            'note' => ['required'],
         ];
     }
 }

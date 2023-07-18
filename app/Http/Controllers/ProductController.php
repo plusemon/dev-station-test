@@ -14,7 +14,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Products/Index', [
+            'products' => Product::get()
+        ]);
     }
 
     /**
@@ -31,7 +33,7 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         Product::query()->create($request->validated());
-        return to_route('dashboard');
+        return back();
     }
 
     /**

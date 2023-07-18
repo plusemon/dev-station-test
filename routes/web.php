@@ -33,7 +33,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::resource('/products', ProductController::class)->only(['create', 'store']);
+    Route::resource('/products', ProductController::class)->only(['index', 'create', 'store']);
     Route::resource('/invoices', InvoiceController::class)->only(['index', 'create', 'store']);
 });
 
