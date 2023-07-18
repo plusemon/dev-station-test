@@ -32,8 +32,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
-    
-    Route::resource('/invoices', InvoiceController::class)->only(['create', 'store']);
+
+    Route::resource('/invoices', InvoiceController::class)->only(['index', 'create', 'store']);
 });
 
 

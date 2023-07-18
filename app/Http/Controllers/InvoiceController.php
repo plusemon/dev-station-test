@@ -14,7 +14,7 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Invoices/Index');
     }
 
     /**
