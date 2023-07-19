@@ -6,6 +6,7 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Invoice;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,12 @@ use App\Http\Controllers\ProfileController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
+Route::get('test', function () {
+    $invoice = Invoice::first();
+    return view('emails.orders.shipped', compact('invoice'));
+});
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
