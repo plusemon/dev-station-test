@@ -6,8 +6,10 @@ use Inertia\Inertia;
 use App\Models\Invoice;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
+use App\Mail\CustomerInvoiceConfirmationEmail;
 
 class InvoiceController extends Controller
 {
@@ -71,9 +73,16 @@ class InvoiceController extends Controller
         }
         // calculate total Items
 
+
         DB::commit();
 
         DB::rollback();
+
+        try {
+            Mail::to($invoice->customer_email, 'John Doe')->send(new CustomerInvoiceConfirmationEmail($invoice));
+        } catch (\Throwable $th) {
+            dd('mail not send, it might invalid mail configuration');
+        }
 
         return to_route('invoices.index');
     }
