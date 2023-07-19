@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date('due_date');
             $table->string('customer_email');
 
-            $table->float('total_qty',10);
+            // $table->float('total_qty',10);
             $table->float('total_amount', 10);
             $table->float('tax_amount');
             $table->float('discount_amount');

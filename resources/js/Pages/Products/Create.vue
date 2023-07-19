@@ -1,7 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, useForm, Link } from '@inertiajs/vue3'
-import { ref } from 'vue'
 import { useToast } from 'vue-toastification'
 
 defineProps({

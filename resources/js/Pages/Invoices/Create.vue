@@ -1,11 +1,17 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, Link, useForm } from '@inertiajs/vue3'
+import { Head, useForm } from '@inertiajs/vue3'
 import { computed } from 'vue'
 import { ref } from 'vue'
+import { useToast } from 'vue-toastification'
 
-const props = defineProps(['nextInvoiceId', 'products'])
-const status = ref(false)
+defineProps({
+    errors: Object,
+    nextInvoiceId: Number,
+    products: Object,
+})
+
+const toast = useToast()
 
 const form = useForm({
     invoiceDate: new Date().toJSON().slice(0, 10),
@@ -27,20 +33,6 @@ const form = useForm({
 
 const itemsUid = ref(1)
 
-const addNewInvoiceItem = () => {
-    form.items.push({
-        uid: ++itemsUid.value,
-        product_id: '',
-        unit_price: 0,
-        qty: 1,
-    })
-}
-const removeInvoiceItem = (uid) => {
-    if (form.items.length !== 1) {
-        form.items = form.items.filter(item => item.uid != uid)
-    }
-}
-
 const subTotalAmount = computed(() => {
     return form.items.map(item => item.unit_price * item.qty).reduce((previousValue, currentValue) => {
         return previousValue + currentValue
@@ -51,14 +43,38 @@ const totalAmount = computed(() => {
     return subTotalAmount.value - form.discount + form.tax
 })
 
+const addNewInvoiceItem = () => {
+    form.items.push({
+        uid: ++itemsUid.value,
+        product_id: '',
+        unit_price: 0,
+        qty: 1,
+    })
+}
+
+const checkIfProductInItems = (selectedItem) => {
+    let itemFound = form.items.filter(item => item.product_id == selectedItem.product_id).length
+    if (itemFound > 1) {
+        toast.warning('Product already exists, please choose another product')
+        selectedItem.product_id = ''
+    }
+}
+
+const removeInvoiceItem = (uid) => {
+    if (form.items.length !== 1) {
+        form.items = form.items.filter(item => item.uid != uid)
+    }
+}
+
 const formSubmitHandler = () => {
     form.post(route('invoices.store'), {
         onSuccess: () => {
             form.reset()
-            status.value = "Invoices has been saved successfully"
+            toast.success("Invoices has been saved successfully")
         }
     })
 }
+
 
 
 </script>
@@ -67,12 +83,8 @@ const formSubmitHandler = () => {
     <Head title="New Invoices" />
 
     <AuthenticatedLayout>
-        <div v-if="status" class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ status }}
-        </div>
 
         <div class="card">
-
             <div class="card-body">
                 <form @submit.prevent="formSubmitHandler">
 
@@ -107,7 +119,7 @@ const formSubmitHandler = () => {
                             <p>206 Yonge St, Toranto - M4S 2A3</p>
                             <p>Tel: 11223344</p>
                             <input type="email" v-model="form.customer_email" placeholder="customer email"
-                                    class="form-control" required>
+                                class="form-control" required>
                         </div>
                     </div>
 
@@ -124,9 +136,11 @@ const formSubmitHandler = () => {
                         <tbody>
                             <tr v-for="item in form.items" :key="item.uid">
                                 <td>
-                                    <select class="form-control" v-model="item.product_id" required>
+                                    <select class="form-control" v-model="item.product_id"
+                                        @change="checkIfProductInItems(item)" required>
                                         <option value="">Select A Product</option>
-                                        <option v-for="product in products" :value="product.id">{{ product.title }}</option>
+                                        <option v-for="product in products" :value="product.id">{{ `ID:${product.id} -
+                                                                                    ${product.title} (${product.price} tk)` }}</option>
                                     </select>
                                 </td>
                                 <td>

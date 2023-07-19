@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Models\Invoice;
+use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
-use App\Models\Product;
-use Inertia\Inertia;
 
 class InvoiceController extends Controller
 {
@@ -15,7 +16,8 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Invoices/Index');
+        $invoices = Invoice::get();
+        return Inertia::render('Invoices/Index', compact('invoices'));
     }
 
     /**
@@ -33,7 +35,47 @@ class InvoiceController extends Controller
      */
     public function store(StoreInvoiceRequest $request)
     {
-        return $request->all();
+        DB::beginTransaction();
+
+        // some extra calculation for invoice properties
+        $total_amount = $request->collect('items')->map(function ($item) {
+            return $item['qty'] * $item['unit_price'];
+        })->sum();
+
+        $discount_amount = $request->get('discount');
+        $tax_amount = $request->get('tax');
+        $sub_total_amount = ($total_amount - $discount_amount) + $tax_amount;
+
+        // create Invoice
+        $invoice = Invoice::query()->create([
+            'invoice_date' => $request->get('invoiceDate'),
+            'due_date' => $request->get('dueDate'),
+            'customer_email' => $request->get('customer_email'),
+
+            'total_amount' => $total_amount,
+            'discount_amount' => $discount_amount,
+            'tax_amount' => $tax_amount,
+            'sub_total_amount' => $sub_total_amount,
+
+            'note' => $request->get('note'),
+        ]);
+
+        // attach Invoice Items
+        foreach ($request->get('items') as $item) {
+            $invoice->invoiceItems()->create([
+                'product_id' => $item['product_id'],
+                'unit_price' => $item['unit_price'],
+                'qty' => $item['qty'],
+                'total_amount' => $item['unit_price'] * $item['qty'],
+            ]);
+        }
+        // calculate total Items
+
+        DB::commit();
+
+        DB::rollback();
+
+        return to_route('invoices.index');
     }
 
     /**

@@ -7,7 +7,7 @@ const props = defineProps({
     products: Object
 })
 
-const form = useForm({
+const deleteForm = useForm({
     id: null
 })
 
@@ -15,10 +15,10 @@ const toast = useToast()
 
 const deleteProduct = ({ id }) => {
     if (confirm('Are you sure want to delete?')) {
-        form.id = id
-        form.delete(route('products.destroy', id), {
+        deleteForm.id = id
+        deleteForm.delete(route('products.destroy', id), {
             onSuccess: () => {
-                form.reset()
+                deleteForm.reset()
                 toast.warning("Product has been deleted successfully")
             },
             onError: (err) => console.log(err)
