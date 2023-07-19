@@ -1,10 +1,30 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, Link } from '@inertiajs/vue3'
+import { Head, Link, useForm } from '@inertiajs/vue3'
+import { useToast } from "vue-toastification"
 
 const props = defineProps({
     products: Object
 })
+
+const form = useForm({
+    id: null
+})
+
+const toast = useToast()
+
+const deleteProduct = ({ id }) => {
+    if (confirm('Are you sure want to delete?')) {
+        form.id = id
+        form.delete(route('products.destroy', id), {
+            onSuccess: () => {
+                form.reset()
+                toast.warning("Product has been deleted successfully")
+            },
+            onError: (err) => console.log(err)
+        })
+    }
+}
 
 </script>
 
@@ -12,14 +32,13 @@ const props = defineProps({
     <Head title="Products" />
 
     <AuthenticatedLayout>
-
         <div class="card">
             <div class="d-flex justify-content-between align-items-center mb-3 card-header">
                 <div class="h5">Products</div>
                 <Link class="btn btn-primary" :href="route('products.create')">New Product</Link>
             </div>
             <div class="card-body">
-                <table class="table table-bordered">
+                <table  v-if="products.length" class="table table-bordered">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -34,11 +53,12 @@ const props = defineProps({
                             <td>{{ product.title }}</td>
                             <td>{{ product.price }} tk</td>
                             <td>
-                                <!-- Edit | Delete -->
+                                <button @click="deleteProduct(product)" class="btn btn-danger"> Delete </button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+                <h3 v-else class="text-center h6">No Items Found</h3>
             </div>
         </div>
 

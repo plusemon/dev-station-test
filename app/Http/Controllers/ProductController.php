@@ -33,7 +33,7 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         Product::query()->create($request->validated());
-        return back();
+        return redirect(route('products.index'));
     }
 
     /**
@@ -65,6 +65,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        return back();
     }
 }

@@ -2,24 +2,24 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, useForm, Link } from '@inertiajs/vue3'
 import { ref } from 'vue'
-import { reactive } from 'vue'
+import { useToast } from 'vue-toastification'
 
 defineProps({
     errors: Object
 })
+
+const toast = useToast()
 
 const form = useForm({
     title: '',
     price: '',
 })
 
-const status = ref(false)
-
 const productFormSubmitHandler = () => {
     form.post(route('products.store'), {
         onSuccess: () => {
             form.reset()
-            status.value = "Product has been added successfully"
+            toast.success("Product has been added successfully")
         },
     })
 }
@@ -30,10 +30,6 @@ const productFormSubmitHandler = () => {
     <Head title="Create Product" />
 
     <AuthenticatedLayout>
-
-        <div v-if="status" class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ status }}
-        </div>
 
         <div class="card">
             <div class="d-flex justify-content-between align-items-center mb-3 card-header">
