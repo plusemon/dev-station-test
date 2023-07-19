@@ -118,4 +118,12 @@ class InvoiceController extends Controller
     {
         //
     }
+
+    public function print(Invoice $invoice)
+    {
+        $invoice->load('invoiceItems.product');
+        return Inertia::render('Invoices/Print',compact('invoice'));
+    }
+
+
 }

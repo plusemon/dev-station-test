@@ -27,6 +27,24 @@ class Invoice extends Model
         'note'
     ];
 
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['total_qty'];
+
+    /**
+     * Get the total_qty
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getTotalQtyAttribute($value)
+    {
+        return $this->invoiceItems()->sum('qty');
+    }
+
     public function invoiceItems(): HasMany
     {
         return $this->hasMany(InvoiceItem::class);
