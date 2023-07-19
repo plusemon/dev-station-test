@@ -5,7 +5,7 @@ import { computed } from 'vue'
 import { ref } from 'vue'
 import { useToast } from 'vue-toastification'
 
-defineProps({
+const props = defineProps({
     errors: Object,
     nextInvoiceId: Number,
     products: Object,
@@ -52,11 +52,14 @@ const addNewInvoiceItem = () => {
     })
 }
 
-const checkIfProductInItems = (selectedItem) => {
+const checkInItemsAndSetProductPrice = (selectedItem) => {
     let itemFound = form.items.filter(item => item.product_id == selectedItem.product_id).length
     if (itemFound > 1) {
         toast.warning('Product already exists, please choose another product')
         selectedItem.product_id = ''
+    } else {
+        let product = props.products.find(p => p.id == selectedItem.product_id)
+        selectedItem.unit_price = product.price ?? 0
     }
 }
 
@@ -137,7 +140,7 @@ const formSubmitHandler = () => {
                             <tr v-for="item in form.items" :key="item.uid">
                                 <td>
                                     <select class="form-control" v-model="item.product_id"
-                                        @change="checkIfProductInItems(item)" required>
+                                        @change="checkInItemsAndSetProductPrice(item)" required>
                                         <option value="">Select A Product</option>
                                         <option v-for="product in products" :value="product.id">{{ `ID:${product.id} -
                                                                                     ${product.title} (${product.price} tk)` }}</option>

@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, Link } from '@inertiajs/vue3'
+import { Head, Link, useForm } from '@inertiajs/vue3'
 
 const props = defineProps({
     invoices: Object
@@ -52,13 +52,14 @@ const deleteInvoice = ({ id }) => {
                             <td>{{ invoice.customer_email }}</td>
                             <td>{{ invoice.total_amount }}</td>
                             <td>{{ invoice.sub_total_amount }}</td>
-                            <td>
+                            <td class="d-flex gap-2">
+                                <Link :href="route('invoices.print', invoice)" class="btn btn-primary"> Print</Link>
                                 <button @click="deleteInvoice(invoice)" class="btn btn-danger"> Delete </button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                 <h3 v-else class="text-center h6">No Items Found</h3>
+                <h3 v-else class="text-center h6">No Items Found</h3>
             </div>
         </div>
 

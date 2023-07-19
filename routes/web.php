@@ -35,6 +35,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('/products', ProductController::class)->only(['index', 'create', 'store', 'destroy']);
     Route::resource('/invoices', InvoiceController::class)->only(['index', 'create', 'store']);
+    Route::get('/invoices/{invoice}/print', [InvoiceController::class, 'print'])->name('invoices.print');
 });
 
 
