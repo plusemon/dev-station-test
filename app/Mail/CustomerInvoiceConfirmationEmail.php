@@ -30,7 +30,7 @@ class CustomerInvoiceConfirmationEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('info@devstation.com', 'Dev Station'),
+            from: new Address(env('MAIL_FROM_ADDRESS', 'devstation@gmail.com'), env('MAIL_FROM_NAME', 'Dev Station Team')),
             subject: 'Invoice has been created',
         );
     }

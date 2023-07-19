@@ -50,8 +50,8 @@ const deleteInvoice = ({ id }) => {
                         <tr v-for="invoice in invoices">
                             <td>#{{ invoice.id }}</td>
                             <td>{{ invoice.customer_email }}</td>
-                            <td>{{ invoice.total_amount }}</td>
-                            <td>{{ invoice.sub_total_amount }}</td>
+                            <td>{{ invoice.total_amount }} tk</td>
+                            <td>{{ invoice.sub_total_amount }} tk</td>
                             <td class="d-flex gap-2">
                                 <Link :href="route('invoices.print', invoice)" class="btn btn-primary"> Print</Link>
                                 <button @click="deleteInvoice(invoice)" class="btn btn-danger"> Delete </button>

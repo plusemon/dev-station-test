@@ -45,6 +45,13 @@
         <p>Note: you can see more details from the <a href="{{ config('app.url') }}">{{ config('app.name') }}</a></p>
 
         <p>Thank you.</p>
+
+        {{-- dev note for project reviewer team --}}
+        <hr>
+        <p>DevNotes: <u>It is possible to make a pdf of the invoice and attach a link here to download the invoice.</u></p>
+        <hr>
+
+
     </main>
 </body>
 
