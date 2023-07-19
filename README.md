@@ -4,7 +4,8 @@
 
 ```
 
-git clone {repo-name}
+git clone https://github.com/plusemon/dev-station-test.git
+
 
 ```
 
