@@ -4,6 +4,7 @@ import { Head, useForm } from '@inertiajs/vue3'
 import { computed } from 'vue'
 import { ref } from 'vue'
 import { useToast } from 'vue-toastification'
+import SpinnerBtn from '@/Components/SpinnerBtn.vue'
 
 const props = defineProps({
     errors: Object,
@@ -97,13 +98,13 @@ const formSubmitHandler = () => {
                             <h1 class="h1">Logo</h1>
                         </div>
                         <div class="col-md-4 text-end">
-                            <p> Invoice #{{ nextInvoiceId }}</p>
-                            <div class="d-flex align-items-center gap-1">
+                            <p class="h2 mb-3"> Invoice #{{ nextInvoiceId }}</p>
+                            <div class="d-flex align-items-center gap-1 mb-2">
                                 <p>Date</p>
                                 <input type="date" v-model="form.invoiceDate" class="form-control" required>
                             </div>
                             <div class="d-flex align-items-center gap-1">
-                                <p>Due date</p>
+                                <p class="text-nowrap">Due date</p>
                                 <input type="date" v-model="form.dueDate" class="form-control" required>
                             </div>
                         </div>
@@ -191,7 +192,7 @@ const formSubmitHandler = () => {
                     </div>
 
                     <div class="text-center">
-                        <button class="btn btn-primary bg-primary" type="submit">Save Invoice</button>
+                        <SpinnerBtn :processing="form.processing" classes="bg-primary" btn-text="Save Invoice" />
                     </div>
                 </form>
             </div>

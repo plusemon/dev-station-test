@@ -6,7 +6,7 @@ const props = defineProps({
 })
 
 onMounted(() => {
-    // window.print()
+    window.print()
 })
 
 </script>
@@ -83,5 +83,5 @@ onMounted(() => {
 </template>
 
 <style>
-@import url('https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css');
+@import url('https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css');
 </style>

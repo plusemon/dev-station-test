@@ -2,6 +2,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, useForm, Link } from '@inertiajs/vue3'
 import { useToast } from 'vue-toastification'
+import SpinnerBtn from '@/Components/SpinnerBtn.vue'
 
 defineProps({
     errors: Object
@@ -54,7 +55,7 @@ const productFormSubmitHandler = () => {
                     </div>
 
                     <div class="text-end mt-3">
-                        <button type="submit" class="btn btn-primary bg-primary">Save Product</button>
+                        <SpinnerBtn :processing="form.processing" classes="bg-primary" btn-text="Save Product" />
                     </div>
                 </form>
             </div>
