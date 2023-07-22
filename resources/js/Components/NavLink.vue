@@ -14,7 +14,7 @@ const props = defineProps({
 
 const classes = computed(() =>
     props.active
-        ? 'nav-link border-bottom border-2 border-black rounded-1 bg-body-secondary text-black'
+        ? 'nav-link rounded-1 bg-white text-black'
         : 'nav-link text-black'
 )
 </script>
