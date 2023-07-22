@@ -16,17 +16,16 @@ defineProps({
             <div class="card-body">
                 <h2>Welcome ({{ auth.user.name }})</h2>
                 <h4>You're logged in!</h4>
-
-
-
             </div>
 
         </div>
 
-        <div class="alert alert-info mt-3">
-            If you are just logged in please refresh once! it will fix the styling issue
+        <!-- <div class="alert alert-info mt-3"> -->
+            <!-- If you are just logged in please refresh once! it will fix the styling issue -->
             <!-- reson: When login success Guest layout assets still remain in Authenticated layout-->
             <!-- I couldnot found any solution to fix this problem. it maybe innertia bugs -->
-        </div>
+        <!-- </div> -->
+
+        <!-- issue fixed by redirecting through the Inertia::location() -->
     </AuthenticatedLayout>
 </template>
