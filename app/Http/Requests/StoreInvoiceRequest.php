@@ -23,12 +23,12 @@ class StoreInvoiceRequest extends FormRequest
     {
         return [
             'invoiceDate' => ['required', 'date'],
-            'dueDate' => ['required', 'date'],
+            'dueDate' => ['required', 'date', 'after_or_equal:invoiceDate'],
             'customer_email' => ['required', 'email', 'max:255'],
             'items' => ['required', 'array'],
             'discount' => ['required', 'numeric'],
             'tax' => ['required', 'numeric'],
-            'note' => ['required'],
+            'note' => ['nullable'],
         ];
     }
 }

@@ -92,7 +92,12 @@ class InvoiceController extends Controller
      */
     public function show(Invoice $invoice)
     {
-        //
+        if (request()->has('print')) {
+            $invoice->load('invoiceItems.product');
+            return Inertia::render('Invoices/Print', compact('invoice'));
+        }
+
+        return Inertia::render('Invoices/Show', compact('invoice'));
     }
 
     /**
@@ -118,12 +123,4 @@ class InvoiceController extends Controller
     {
         //
     }
-
-    public function print(Invoice $invoice)
-    {
-        $invoice->load('invoiceItems.product');
-        return Inertia::render('Invoices/Print',compact('invoice'));
-    }
-
-
 }
